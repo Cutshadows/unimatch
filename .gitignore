@@ -1,6 +1,8 @@
 ## Unimatch Backend
 /backend/*.mod*
 /backend/*.sum*
+/backend/.env
+/backend/postgres_data
 
 
 ## Unimatch Frontend
