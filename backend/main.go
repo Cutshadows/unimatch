@@ -18,21 +18,22 @@ func main() {
 		panic(err)
 	}
 
+	defer app.DB.Close() // Ensure the database connection is closed when the application exits
 	app.Logger.Println("Application is running")
+	// routes definitions
 	r := routes.SetupRoutes(app)
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%d", port),
-		IdleTimeout: time.Minute, // Idle timeout in seconds
-		Handler: r,
-		ReadTimeout: 10 * time.Second, // Read timeout in seconds
-		WriteTimeout: 30 * time.Second , // Write timeout in seconds
+		Addr:         fmt.Sprintf(":%d", port),
+		IdleTimeout:  time.Minute, // Idle timeout in seconds
+		Handler:      r,
+		ReadTimeout:  10 * time.Second, // Read timeout in seconds
+		WriteTimeout: 30 * time.Second, // Write timeout in seconds
 	}
 	app.Logger.Printf("Server started successfully on port %d", port)
 
 	err = server.ListenAndServe()
 	if err != nil {
 		app.Logger.Fatalf("Failed to start server: %v", err)
-	} 
-		
-}
+	}
 
+}

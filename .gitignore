@@ -52,5 +52,5 @@ yarn-error.log*
 */next-env.d.ts
 
 
-/unimatch/
+/unimatch-back/*
 /unimatch/*
