@@ -14,6 +14,21 @@ services:
       - ./db_backups:/db_backups
     networks:
       - dokploy-network
+  test_db:
+    container_name: test-db
+    image: postgres:15.3
+    ports:
+      - 5433:5432
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: centra-db-admin
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: unimatch-test-db
+    volumes:
+      - ./postgres_data/postgres-test-data:/var/lib/postgresql/data:rw
+      - ./db_backups:/db_backups
+    networks:
+      - dokploy-network
 networks:
   dokploy-network:
     name: dokploy-network

@@ -1,6 +1,9 @@
 package store
 
-import "database/sql"
+import (
+	"database/sql"
+	"time"
+)
 
 type Workout struct {
 	ID             int            `json:"id"`
@@ -9,6 +12,9 @@ type Workout struct {
 	Description    string         `json:"description"`
 	Duration       int            `json:"duration"` // Duration in seconds
 	CaloriesBurned int            `json:"calories_burned"`
+	Date           *time.Time     `json:"date"` // Date of the workout
+	CreatedAt      *time.Time     `json:"created_at"`
+	UpdatedAt      *time.Time     `json:"updated_at"`
 	Entries        []WorkoutEntry `json:"entries"`
 }
 
@@ -117,11 +123,11 @@ func (pg *PostgreWorkoutStore) UpdateWorkout(workout *Workout) error {
 func (pg *PostgreWorkoutStore) GetWorkoutByID(id int64) (*Workout, error) {
 	workout := &Workout{}
 	query := `
-	SELECT id, title, description, duraction, calories_burned
+	SELECT id, title, description, duration, calories_burned, date
 	FROM workouts
 	WHERE id = $1
 	`
-	err := pg.db.QueryRow(query, id).Scan(&workout.ID, &workout.Title, &workout.Description, &workout.Duration, &workout.CaloriesBurned)
+	err := pg.db.QueryRow(query, id).Scan(&workout.ID, &workout.Title, &workout.Description, &workout.Duration, &workout.CaloriesBurned, &workout.Date)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}

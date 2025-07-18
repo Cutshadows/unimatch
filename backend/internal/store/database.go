@@ -20,23 +20,23 @@ func Open() (*sql.DB, error) {
 	return db, nil
 }
 
-func MigrateFs(db *sql.DB, migrationFS fs.FS, dir string) error {
-	goose.SetBaseFS(migrationFS)
+func MigrateFS(db *sql.DB, migrationsFS fs.FS, dir string) error {
+	goose.SetBaseFS(migrationsFS)
 	defer func() {
-		goose.SetBaseFS(nil) // Reset the base FS after migration
+		goose.SetBaseFS(nil)
 	}()
-
 	return Migrate(db, dir)
-
 }
 
 func Migrate(db *sql.DB, dir string) error {
 	err := goose.SetDialect("postgres")
 	if err != nil {
-		return fmt.Errorf("failed to set goose dialect: %w", err)
+		return fmt.Errorf("migrate: %w", err)
 	}
-	if err := goose.Up(db, dir); err != nil {
-		return fmt.Errorf("failed to apply migrations: %w", err)
+
+	err = goose.Up(db, dir)
+	if err != nil {
+		return fmt.Errorf("goose up: %w", err)
 	}
 	return nil
 }
