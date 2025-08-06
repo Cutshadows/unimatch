@@ -3,6 +3,7 @@
 /backend/*.sum*
 /backend/.env
 /backend/postgres_data
+/backend/postgres_test_data
 
 
 ## Unimatch Frontend

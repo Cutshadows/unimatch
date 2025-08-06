@@ -21,11 +21,11 @@ services:
       - 5433:5432
     restart: unless-stopped
     environment:
-      POSTGRES_USER: centra-db-admin
-      POSTGRES_PASSWORD: 12345
-      POSTGRES_DB: unimatch-test-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: unimatch-test
     volumes:
-      - ./postgres_data/postgres-test-data:/var/lib/postgresql/data:rw
+      - ./postgres_test_data:/var/lib/postgresql/data
       - ./db_backups:/db_backups
     networks:
       - dokploy-network
@@ -36,6 +36,8 @@ networks:
     attachable: true
     external: true
 volumes:
+  postgres_test_data:
+    driver: local
   postgres_data:
     driver: local
   db_backups:

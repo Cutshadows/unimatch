@@ -10,7 +10,7 @@ import (
 )
 
 func setupTestDB(t *testing.T) *sql.DB {
-	db, err := sql.Open("pgx", "host=localhost port=5433 user=centra-db-admin password=12345 dbname=unimatch_test_db sslmode=disable")
+	db, err := sql.Open("pgx", "host=localhost port=5433 user=postgres password=postgres dbname=unimatch-test sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to open database: %v", err)
 	}
