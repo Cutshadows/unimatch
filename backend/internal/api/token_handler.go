@@ -38,7 +38,7 @@ func (h *TokenHandler) HandleCreateToken(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	user, err := h.userStore.GetUserByUsername(req.Username)
-	if err != nil {
+	if err != nil || user == nil {
 		h.logger.Printf("Error retrieving user: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.Envelope{"error": "Internal server error"})
 		return
@@ -64,7 +64,7 @@ func (h *TokenHandler) HandleCreateToken(w http.ResponseWriter, r *http.Request)
 	}
 
 	util.WriteJSON(w, http.StatusCreated, util.Envelope{
-		"token": token,
+		"auth_token": token,
 	})
 
 }

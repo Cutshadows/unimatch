@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"unimatch-back/internal/api"
+	"unimatch-back/internal/middleware"
 	"unimatch-back/internal/store"
 	"unimatch-back/migrations"
 )
@@ -16,6 +17,7 @@ type Application struct {
 	WorkoutHandler *api.WorkoutHandler
 	UserHandler    *api.UserHandler
 	TokenHandler   *api.TokenHandler
+	Middleware     *middleware.Middleware
 	DB             *sql.DB
 }
 
@@ -43,12 +45,14 @@ func NewApplication() (*Application, error) {
 	workoutHandler := api.NewWorkoutHandler(workoutStore, logger)
 	userHandler := api.NewUserHandler(userStore, logger)
 	tokenHandler := api.NewTokenHandler(tokenStore, userStore, logger)
+	middlewareHandler := &middleware.Middleware{UserStore: userStore}
 	// our middleware will go here
 	app := &Application{
 		Logger:         logger,
 		WorkoutHandler: workoutHandler,
 		UserHandler:    userHandler,
 		TokenHandler:   tokenHandler,
+		Middleware:     middlewareHandler,
 		DB:             pgDb,
 	}
 
